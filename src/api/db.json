@@ -1,0 +1,139 @@
+{
+  "posts": [
+    {
+      "id": 1,
+      "username": "jordan",
+      "avatar_url": "https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg",
+      "image_url": "https://i.pinimg.com/736x/67/d4/ed/67d4ed03bc00b6a159b456484b54b42f.jpg",
+      "number_of_likes": 196,
+      "liked": false,
+      "bookmarked": false,
+      "caption": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolore enim praesentium inventore asperiores sunt corporis unde dicta ipsa dolorum voluptatibus dolor, odio nobis est consequuntur labore!",
+      "comments": [
+        {
+          "username": "kenny.s",
+          "avatar_url": "https://liveboldandbloom.com/wp-content/uploads/2021/09/Untitled_design_3_1.png",
+          "comment": "nice car man"
+        },
+        {
+          "username": "jordan.ongg",
+          "avatar_url": "https://www.dmarge.com/wp-content/uploads/2021/01/dwayne-the-rock-.jpg",
+          "comment": "thanks bro"
+        },
+        {
+          "username": "test",
+          "avatar_url": "",
+          "comment": "hello boys"
+        },
+        {
+          "username": "test",
+          "avatar_url": "",
+          "comment": "hihhii"
+        },
+        {
+          "username": "test",
+          "avatar_url": "",
+          "comment": "hehehe"
+        },
+        {
+          "username": "jordan",
+          "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Dwayne_Johnson_2014_%28cropped%29.jpg/640px-Dwayne_Johnson_2014_%28cropped%29.jpg",
+          "comment": "hello"
+        },
+        {
+          "username": "heri",
+          "avatar_url": "https://parade.com/.image/ar_4:3%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTkwNTgwOTIyMDYxMTcwNTU2/john-cena-net-worth.jpg",
+          "comment": "helooo"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "username": "kenny.s",
+      "avatar_url": "https://liveboldandbloom.com/wp-content/uploads/2021/09/Untitled_design_3_1.png",
+      "image_url": "https://preview.redd.it/aipg2jghyzp81.jpg?auto=webp&s=ec773acc4490220da7205a968b2f387942e0c828",
+      "number_of_likes": 54,
+      "bookmarked": false,
+      "liked": true,
+      "caption": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolore enim praesentium inventore asperiores sunt corporis unde dicta ipsa dolorum voluptatibus dolor, odio nobis est consequuntur labore!",
+      "comments": [
+        {
+          "username": "test",
+          "avatar_url": "",
+          "comment": "hello boys"
+        },
+        {
+          "username": "test",
+          "avatar_url": "",
+          "comment": "nice try"
+        },
+        {
+          "username": "test",
+          "avatar_url": "",
+          "comment": "halo halo"
+        },
+        {
+          "username": "jordan",
+          "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Dwayne_Johnson_2014_%28cropped%29.jpg/640px-Dwayne_Johnson_2014_%28cropped%29.jpg",
+          "comment": "hello to you too"
+        },
+        {
+          "username": "heri",
+          "avatar_url": "https://parade.com/.image/ar_4:3%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTkwNTgwOTIyMDYxMTcwNTU2/john-cena-net-worth.jpg",
+          "comment": "hello bro"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "username": "arnold.chef",
+      "avatar_url": "https://newyorkcomedyclub.com/img/imagetest/felonious-munk-d4db0b52-main-image.jpg",
+      "image_url": "https://preview.redd.it/cwqym95n7g391.png?auto=webp&s=abbb596194dcdebed1e58bd6befc06cc7cc45ad9",
+      "number_of_likes": 102,
+      "liked": true,
+      "bookmarked": false,
+      "caption": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero dolore enim praesentium inventore asperiores sunt corporis unde dicta ipsa dolorum voluptatibus dolor, odio nobis est consequuntur labore!",
+      "comments": [
+        {
+          "username": "jordan",
+          "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Dwayne_Johnson_2014_%28cropped%29.jpg/640px-Dwayne_Johnson_2014_%28cropped%29.jpg",
+          "comment": "hello"
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "username": "jordan",
+      "password": "password",
+      "name": "Jordan",
+      "email": "jd.email",
+      "avatar_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Dwayne_Johnson_2014_%28cropped%29.jpg/640px-Dwayne_Johnson_2014_%28cropped%29.jpg"
+    },
+    {
+      "id": 2,
+      "username": "heri",
+      "password": "password",
+      "name": "Heriyanto",
+      "email": "hr.email",
+      "avatar_url": "https://parade.com/.image/ar_4:3%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTkwNTgwOTIyMDYxMTcwNTU2/john-cena-net-worth.jpg"
+    },
+    {
+      "id": 3,
+      "username": "bruno",
+      "password": "password",
+      "name": "Bruno Mars",
+      "email": "br.email",
+      "avatar_url": "https://media.resources.festicket.com/www/artists/BrunoMars_New.jpg"
+    },
+    {
+      "id": 4,
+      "avatar_url": "/assets/1.jpg",
+      "email": "mazsanzgame@gmail.com",
+      "name": "Alsandy Maulana",
+      "username": "massandz",
+      "password": "qweqwe"
+    }
+  ]
+}
