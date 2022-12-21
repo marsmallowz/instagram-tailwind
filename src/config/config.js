@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const API_URL = "http://localhost:2000";
+export const API_URL = "https://silk-abounding-airmail.glitch.me";
 export const axiosInstance = axios.create({
   baseURL: API_URL,
 });
