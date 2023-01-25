@@ -18,65 +18,76 @@ export default function NavBar(props) {
     });
   }
   return (
-    <nav className="sm:h-screen sticky top-0 border border-b-1 z-50 bg-white">
-      <div className="hidden sm:flex flex-col gap-12 px-5 py-5 items-center justify-center h-screen">
+    <nav className="border-b-1 sticky top-0 z-50 border bg-white sm:h-screen">
+      <div className="hidden h-full flex-col items-center justify-center gap-12 px-5 py-5 sm:flex">
         <div className="mt-10">
-          <AiOutlineInstagram className="w-8 h-8" />
+          <AiOutlineInstagram className="h-8 w-8" />
         </div>
-        <ul className="flex-1 flex flex-col items-center gap-8">
+        <ul className="flex flex-1 flex-col items-center gap-8">
           <li>
             <Link to="/">
-              <a href="">
-                <AiFillHome className="w-7 h-7" />
-              </a>
+              <button>
+                <AiFillHome className="h-7 w-7" />
+              </button>
             </Link>
           </li>
           <li>
-            <a href="">
-              <FiSearch className="w-7 h-7" />
-            </a>
+            <button>
+              <FiSearch className="h-7 w-7" />
+            </button>
           </li>
           <li>
-            <a href="">
-              <MdOutlineExplore className="w-7 h-7" />
-            </a>
+            <button>
+              <MdOutlineExplore className="h-7 w-7" />
+            </button>
           </li>
           <li>
-            <AiOutlineMessage className="w-7 h-7" />
+            <AiOutlineMessage className="h-7 w-7" />
           </li>
           <li className="cursor-pointer">
-            <AiOutlineHeart className="w-7 h-7" />
+            <AiOutlineHeart className="h-7 w-7" />
           </li>
-          <li className="cursor-pointer">
-            <AiOutlinePlusSquare className="w-7 h-7" />
+          <li
+            onClick={() => {
+              console.log("jalan");
+              props.setShowModalNewPost(true);
+            }}
+            className="cursor-pointer"
+          >
+            <AiOutlinePlusSquare className="h-7 w-7" />
           </li>
           <li className="" onClick={navigateToProfile}>
             <img
-              className="rounded-full w-7 h-7"
-              src={props.user.avatar_url}
+              className="h-7 w-7 rounded-full"
+              src={props.user.avatarUrl}
               alt="au"
             />
           </li>
         </ul>
         <div>
-          <FiMenu className="w-7 h-7" />
+          <FiMenu className="h-7 w-7" />
         </div>
       </div>
-      <div className="sm:hidden flex flex-row px-4 py-3 items-center justify-between">
-        <div className="w-28 h-7">
+      <div className="flex flex-row items-center justify-between px-4 py-3 sm:hidden">
+        <div className="h-7 w-28">
           <Link to="/login">
             <img src="/assets/logo-instagram.svg" alt="" />
           </Link>
         </div>
         <ul className="flex flex-row gap-2">
-          <li>
-            <a className="cursor-pointer">
-              <AiOutlinePlusSquare className="w-7 h-7" />
-            </a>
+          <li
+            onClick={() => {
+              console.log("jalan");
+              props.setShowModalNewPost(true);
+            }}
+          >
+            <button>
+              <AiOutlinePlusSquare className="h-7 w-7" />
+            </button>
           </li>
-          <a className="cursor-pointer">
-            <AiOutlineHeart className="w-7 h-7" />
-          </a>
+          <button>
+            <AiOutlineHeart className="h-7 w-7" />
+          </button>
         </ul>
       </div>
     </nav>

@@ -9,45 +9,48 @@ import { Link, useNavigate } from "react-router-dom";
 export default function BottomBar(props) {
   let navigate = useNavigate();
   function navigateToProfile() {
-    navigate("/".concat(props.user.username), {
-      state: { user: props.user },
-      replace: true,
-    });
+    if (props.user.username !== "") {
+      navigate("/".concat(props.user.username), {
+        state: { user: props.user },
+        replace: true,
+      });
+    }
   }
   return (
-    <div className="fixed bottom-0 w-full border border-t-2 z-50 bg-white px-6 py-2 sm:hidden">
+    <div className="fixed bottom-0 z-50 w-full border border-t-2 bg-white px-6 py-2 sm:hidden">
       <ul className="flex flex-row justify-between">
         <li>
           <Link to="/">
-            <a href="">
-              <AiFillHome className="w-7 h-7" />
-            </a>
+            <button>
+              <AiFillHome className="h-7 w-7" />
+            </button>
           </Link>
         </li>
         <li>
-          <a href="">
-            <FiSearch className="w-7 h-7" />
-          </a>
+          <button>
+            <FiSearch className="h-7 w-7" />
+          </button>
         </li>
         <li>
-          <a href="">
-            <BiMoviePlay className="w-7 h-7" />
-          </a>
+          <button>
+            <BiMoviePlay className="h-7 w-7" />
+          </button>
         </li>
         <li>
-          <a href="">
-            <AiOutlineMessage className="w-7 h-7" />
-          </a>
+          <button>
+            <AiOutlineMessage className="h-7 w-7" />
+          </button>
         </li>
         <li onClick={navigateToProfile}>
-          <a href="">
+          <button>
             {/* <Link to={"/".concat(props.user.username)}></Link> */}
             <img
-              className="rounded-full w-7 h-7 object-cover"
-              src={props.user.avatar_url}
+              className="h-7 w-7 rounded-full object-cover"
+              // src={props.user.avatar_url}
+              src={props.user?.avatar_url}
               alt="au"
             />
-          </a>
+          </button>
         </li>
       </ul>
     </div>

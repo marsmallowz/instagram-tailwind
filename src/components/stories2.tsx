@@ -1,23 +1,23 @@
-export default function Stories() {
+export default function Stories2() {
   return (
     <div className=" bg-white ">
       <ul className="flex space-x-2 overflow-x-auto rounded-md border-slate-200 p-2 sm:border">
         {/* <li className="flex flex-col items-center space-y-1">
-          <div className="bg-gradient-to-tr from-yellow-400 to-purple-600 p-0.5 rounded-full">
-            <a className=" block bg-white p-0.5 rounded-full cursor-pointer">
-              <img
-                className="rounded-full w-16 h-16"
-                src="/assets/1.jpg"
-                alt="my"
-              />
-            </a>
-          </div>
-          <a className="cursor-pointer">
-            <div className="text-xs text-center overflow-hidden text-ellipsis w-20">
-              Your story
+            <div className="bg-gradient-to-tr from-yellow-400 to-purple-600 p-0.5 rounded-full">
+              <a className=" block bg-white p-0.5 rounded-full cursor-pointer">
+                <img
+                  className="rounded-full w-16 h-16"
+                  src="/assets/1.jpg"
+                  alt="my"
+                />
+              </a>
             </div>
-          </a>
-        </li> */}
+            <a className="cursor-pointer">
+              <div className="text-xs text-center overflow-hidden text-ellipsis w-20">
+                Your story
+              </div>
+            </a>
+          </li> */}
         <li className="flex flex-col items-center space-y-1">
           <div className="rounded-full bg-gradient-to-tr from-yellow-400 to-purple-600 p-0.5">
             <button className=" block cursor-pointer rounded-full bg-white p-0.5">

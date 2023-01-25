@@ -1,52 +1,41 @@
 import { useState } from "react";
 import { AiFillFacebook, AiOutlineDown } from "react-icons/ai";
 import { useDispatch } from "react-redux";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import { axiosInstance } from "../config/config";
-import user_types from "../redux/auth/types";
+import { Link, useNavigate } from "react-router-dom";
+import { userLogin } from "../redux/middleware/userauth";
 
 export default function Login() {
-  // dispatch untuk melakukan setState
   const dispatch = useDispatch();
   let navigate = useNavigate();
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    username: "",
+    password: "",
+  });
   const [loginStatus, setLoginStatus] = useState(false);
 
   async function Login() {
-    const res = await axiosInstance.get("/users/", { params: user });
-    const userData = res.data[0];
-
-    // dispatch untuk melakukan setState
-    // jika ada dua reducer maka bagaimana cara disptach
-    // mengenai dispatch, itu cara dispatch tau bahwa di a cuma men dispatch userReducer
-    dispatch({
-      type: user_types.USER_LOGIN,
-      payload: userData,
-    });
-
-    localStorage.setItem("user_data", JSON.stringify(userData));
-
-    userData
-      ? navigate("/", { state: { user: res.data[0] }, replace: true })
-      : setLoginStatus(true);
+    const isAuth = await dispatch(userLogin(user));
+    if (isAuth.status) {
+      return navigate("/", { state: { user: isAuth.data }, replace: true });
+    }
+    return setLoginStatus(true);
   }
 
   function inputHandler(event) {
     const { name, value } = event.target;
-
     setUser({
       ...user,
       [name]: value,
     });
   }
   return (
-    <div className="h-screen flex flex-col items-center justify-between  py-4">
+    <div className="flex h-screen flex-col items-center justify-between  py-4">
       <div className="flex flex-row items-center gap-1">
         <div className="">English</div>
-        <AiOutlineDown className="w-4 h-4" />
+        <AiOutlineDown className="h-4 w-4" />
       </div>
-      <div className="flex flex-col items-center w-[270px] gap-y-2">
-        <div className="w-44 h-12 mb-10">
+      <div className="flex w-[270px] flex-col items-center gap-y-2">
+        <div className="mb-10 h-12 w-44">
           <Link to="/">
             <img
               src="/assets/logo-instagram.svg"
@@ -55,37 +44,40 @@ export default function Login() {
             />
           </Link>
         </div>
-        <div className="flex flex-row bg-[#0095F6] w-full py-1 px-1  rounded-sm justify-center items-center cursor-pointer">
-          <AiFillFacebook className="w-5 h-5" color="white" />
+        <div className="flex w-full cursor-pointer flex-row items-center justify-center  rounded-sm bg-[#0095F6] py-1 px-1">
+          <AiFillFacebook className="h-5 w-5" color="white" />
           <div className="text-md font-medium text-white ">
             Continue With Facebook
           </div>
         </div>
-        <div className="inline-flex justify-center items-center w-full">
-          <hr className="my-8 w-64 h-px bg-gray-200 border-0 dark:bg-gray-700" />
-          <span className="absolute left-1/2 px-3 font-medium text-gray-400 bg-white -translate-x-1/2 dark:text-gray-500">
+        <div className="inline-flex w-full items-center justify-center">
+          <hr className="my-8 h-px w-64 border-0 bg-gray-200 dark:bg-gray-700" />
+          <span className="absolute left-1/2 -translate-x-1/2 bg-white px-3 font-medium text-gray-400 dark:text-gray-500">
             OR
           </span>
         </div>
 
         <input
-          className="w-[270px] py-1 px-1 border-2 rounded-sm placeholder:text-xs"
+          className="w-[270px] rounded-sm border-2 py-1 px-1 placeholder:text-xs"
           name="username"
           type="text"
           placeholder="Phone number, username, or email"
           onChange={inputHandler}
         />
         <input
-          className="w-[270px] py-1 px-1 border-2 rounded-sm placeholder:text-xs"
+          className="w-[270px] rounded-sm border-2 py-1 px-1 placeholder:text-xs"
           name="password"
           type="password"
           placeholder="Password"
           onChange={inputHandler}
         />
         <div className="self-end text-xs text-blue-500">Forget Password?</div>
+        {!loginStatus ? null : <div>wrong username/password</div>}
         <button
-          className="bg-[#0095F6] w-full py-1 px-1 h-10 rounded-sm text-md font-medium text-white"
-          onClick={Login}
+          className="text-md h-10 w-full roundeobile Number or ed-sm bg-[#0095F6] py-1 px-1 font-medium text-white"
+          onClick={() => {
+            Login()
+          }}
         >
           Log In
         </button>
@@ -93,7 +85,7 @@ export default function Login() {
         <div>
           Don't have account?
           <Link to="/register">
-            <a className="text-blue-500"> Sign up</a>
+            <button className="ml-2 text-blue-500"> Sign up</button>
           </Link>
         </div>
       </div>

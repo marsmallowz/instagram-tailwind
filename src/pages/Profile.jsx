@@ -1,19 +1,28 @@
-import { BsGearFill, BsChevronCompactDown } from "react-icons/bs";
+import { BsChevronCompactDown } from "react-icons/bs";
 import { IoSettingsOutline, IoCloseOutline } from "react-icons/io5";
 import { AiOutlineUserAdd } from "react-icons/ai";
-import { FaUserTag } from "react-icons/fa";
 import { BiGrid, BiBookmark, BiRectangle, BiGroup } from "react-icons/bi";
 import BottomBar from "../components/BottomBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import user_types from "../redux/auth/types";
+import { axiosInstance } from "../config/config";
 
 export default function Profile() {
+  const userSelector = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { state } = useLocation();
-  console.log("state");
-  console.log(state);
+  // const { state } = useLocation();
+  const location = useLocation();
+  const [isLoading, setIsLoading] = useState(true);
+  const [user, setUser] = useState({});
+  const [isProfile, setIsProfile] = useState(false);
+
+  async function fetchUser(username) {
+    const res = await axiosInstance.get("/users", { params: { username } });
+    setUser(res.data[0]);
+  }
+
   const [openSettings, setOpenSettings] = useState(false);
 
   function openSettingsHandler() {
@@ -21,191 +30,221 @@ export default function Profile() {
   }
 
   function logOut() {
-    console.log("jalan");
     dispatch({
       type: user_types.USER_LOGOUT,
     });
-    localStorage.removeItem("user_data");
-    // localStorage.setItem("user_data", JSON.stringify({}));
+    // localStorage.removeItem("user_data");
+    localStorage.clear();
+    window.location.reload(true);
   }
+
+  useEffect(() => {
+    setIsLoading(false);
+    let username = location.pathname?.split("/")[1];
+    if (username === userSelector.username) {
+      setUser({ ...userSelector });
+      // fetchPost(userSelector.username)
+      setIsProfile(true);
+    } else {
+      fetchUser(username);
+      // fetchPost(username)
+      setIsProfile(false);
+    }
+  }, [location.pathname?.split("/")[1]]);
+
   return (
     <>
-      <nav className="sticky top-0">
-        <div className="flex flex-row bg-white border items-center justify-between px-4 py-3 border-b-2">
-          <div className="cursor-pointer">
-            {openSettings ? (
-              <IoCloseOutline
-                className="w-8 h-8"
-                onClick={openSettingsHandler}
-              />
-            ) : (
-              <IoSettingsOutline
-                className="w-6 h-6"
-                onClick={openSettingsHandler}
-              />
-            )}
-          </div>
-          {openSettings ? (
-            <div>Settings</div>
-          ) : (
-            <div className="flex flex-row items-center gap-1">
-              <div className="font-medium">massandz</div>
-              <BsChevronCompactDown className="w-4 h-4" />
-            </div>
-          )}
-          {openSettings ? (
-            <div className="w-6"></div>
-          ) : (
-            <div>
-              <AiOutlineUserAdd className="w-6 h-6" />
-            </div>
-          )}
-        </div>
-      </nav>
-      {openSettings ? (
-        <div>
-          <ul className="flex flex-col divide-y gap-1 justify-center">
-            <li className="py-1 cursor-pointer" onClick={() => {}}>
-              <div className="px-4">Help</div>
-            </li>
-            <li className="py-1 cursor-pointer" onClick={logOut}>
-              <div className="px-4">
-                <Link>Log Out</Link>
-              </div>
-            </li>
-          </ul>
-        </div>
+      {isLoading ? (
+        <div>Loading</div>
       ) : (
-        <div>
-          <div className="px-4 py-3 grid grid-cols-3 grid-rows-2 gap-x-4 ">
-            <div className="row-span-2 flex">
-              <img
-                src={state.user.avatar_url}
-                alt=""
-                className="rounded-full object-cover w-28 h-28"
-              />
+        <>
+          <nav className="sticky top-0">
+            <div className="flex flex-row items-center justify-between border border-b-2 bg-white px-4 py-3">
+              {isProfile ? (
+                <div className="cursor-pointer">
+                  {openSettings ? (
+                    <IoCloseOutline
+                      className="h-8 w-8"
+                      onClick={openSettingsHandler}
+                    />
+                  ) : (
+                    <IoSettingsOutline
+                      className="h-6 w-6"
+                      onClick={openSettingsHandler}
+                    />
+                  )}
+                </div>
+              ) : null}
+
+              {openSettings ? (
+                <div>Settings</div>
+              ) : (
+                <div className="flex flex-row items-center gap-1">
+                  <div className="font-medium">massandz</div>
+                  <BsChevronCompactDown className="h-4 w-4" />
+                </div>
+              )}
+              {openSettings ? (
+                <div className="w-6"></div>
+              ) : (
+                <div>
+                  <AiOutlineUserAdd className="h-6 w-6" />
+                </div>
+              )}
             </div>
-            <div className="col-span-2 font-light text-3xl self-center	">
-              {state.user.username}
-            </div>
-            <button className="h-3/5 col-span-2 border-2 rounded-md font-medium text-sm">
-              Edit profile
-            </button>
-          </div>
-          <div className="px-4 py-3">
-            <div className="text-sm font-medium">AlsandyMaulana</div>
-            <div className="text-sm">Id line : 251509</div>
-          </div>
-          <div className="mb-4">
-            <ul className="flex space-x-1 overflow-x-auto  items-center">
-              <li className="">
-                <a className="flex flex-col items-center space-y-1" href="">
-                  <img
-                    className=" block bg-white p-0.5 border cursor-pointer rounded-full w-16 h-16"
-                    src="/assets/h1.jpg"
-                    alt="my"
-                  />
-                  <div className="text-xs text-center overflow-hidden text-ellipsis w-20">
-                    Auto Chess
+          </nav>
+          {openSettings ? (
+            <div>
+              <ul className=" flex flex-col justify-center gap-1 divide-y">
+                <li className="cursor-pointer py-1" onClick={() => { }}>
+                  <div className="px-4">Help</div>
+                </li>
+                <li className="cursor-pointer py-1" onClick={logOut}>
+                  <div className="px-4">
+                    <Link>Log Out</Link>
                   </div>
-                </a>
-              </li>
-              <li className="">
-                <a className="flex flex-col items-center space-y-1" href="">
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <div>
+              <div className="grid grid-cols-3 grid-rows-2 gap-x-4 px-4 py-3 ">
+                <div className="row-span-2 flex">
                   <img
-                    className=" block bg-white p-0.5 border cursor-pointer rounded-full w-16 h-16"
-                    src="/assets/h2.jpg"
-                    alt="my"
+                    src={user.avatarUrl}
+                    alt=""
+                    className="h-28 w-28 rounded-full object-cover"
                   />
-                  <div className="text-xs text-center overflow-hidden text-ellipsis w-20">
-                    Pokemon Go
-                  </div>
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="flex flex-row px-2 py-2 border justify-evenly ">
-            <div className="basis-1/3 flex flex-col items-center ">
-              <div className="font-medium">19</div>
-              <div className="text-xs text-gray-400">posts</div>
+                </div>
+                <div className="col-span-2 self-center text-3xl font-light	">
+                  {user.username}
+                </div>
+                <button className="col-span-2 h-3/5 rounded-md border-2 text-sm font-medium">
+                  Edit profile
+                </button>
+              </div>
+              <div className="px-4 py-3">
+                <div className="text-sm font-medium">AlsandyMaulana</div>
+                <div className="text-sm">Id line : 251509</div>
+              </div>
+              <div className="mb-4">
+                <ul className="flex items-center space-x-1  overflow-x-auto">
+                  <li className="">
+                    <button
+                      className="flex flex-col items-center space-y-1"
+                      href=""
+                    >
+                      <img
+                        className=" block h-16 w-16 cursor-pointer rounded-full border bg-white p-0.5"
+                        src="/assets/h1.jpg"
+                        alt="my"
+                      />
+                      <div className="w-20 overflow-hidden text-ellipsis text-center text-xs">
+                        Auto Chess
+                      </div>
+                    </button>
+                  </li>
+                  <li className="">
+                    <button
+                      className="flex flex-col items-center space-y-1"
+                      href=""
+                    >
+                      <img
+                        className=" block h-16 w-16 cursor-pointer rounded-full border bg-white p-0.5"
+                        src="/assets/h2.jpg"
+                        alt="my"
+                      />
+                      <div className="w-20 overflow-hidden text-ellipsis text-center text-xs">
+                        Pokemon Go
+                      </div>
+                    </button>
+                  </li>
+                </ul>
+              </div>
+              <div className="flex flex-row justify-evenly border px-2 py-2 ">
+                <div className="flex basis-1/3 flex-col items-center ">
+                  <div className="font-medium">19</div>
+                  <div className="text-xs text-gray-400">posts</div>
+                </div>
+                <div className="flex basis-1/3 flex-col items-center">
+                  <div className="font-medium">325</div>
+                  <div className="text-xs text-gray-400">followers</div>
+                </div>
+                <div className="flex basis-1/3 flex-col items-center">
+                  <div className="font-medium">335</div>
+                  <div className="text-xs text-gray-400">following</div>
+                </div>
+              </div>
+              <div className="flex flex-row justify-around py-3">
+                <div>
+                  <BiGrid className="h-7 w-7 text-sky-500" />
+                </div>
+                <div>
+                  <BiRectangle className="h-6 w-6 text-gray-400" />
+                </div>
+                <div>
+                  <BiBookmark className="h-6 w-6 text-gray-400" />
+                </div>
+                <div>
+                  <BiGroup className="h-6 w-6 text-gray-400" />
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-1">
+                {/* kalau ada error coba gunakan overflow-hidden di tag div */}
+                <div>
+                  <img
+                    src="/assets/p1.jpg"
+                    alt=""
+                    className="aspect-square  object-cover"
+                  />
+                </div>
+                <div>
+                  <img
+                    src="/assets/p2.jpg"
+                    alt=""
+                    className="aspect-square object-cover"
+                  />
+                </div>
+                <div>
+                  <img
+                    src="/assets/p3.jpg"
+                    alt=""
+                    className="aspect-square object-cover"
+                  />
+                </div>
+                <div>
+                  <img
+                    src="/assets/p4.jpg"
+                    alt=""
+                    className="aspect-square object-cover"
+                  />
+                </div>
+                <div>
+                  <img
+                    src="/assets/p4-1.jpg"
+                    alt=""
+                    className="aspect-square object-cover"
+                  />
+                </div>
+                <div>
+                  <img
+                    src="/assets/p4-2.jpg"
+                    alt=""
+                    className="aspect-square object-cover"
+                  />
+                </div>
+                <div>
+                  <img
+                    src="/assets/p5.jpg"
+                    alt=""
+                    className="aspect-square object-cover"
+                  />
+                </div>
+              </div>
+              <BottomBar user={user} />
             </div>
-            <div className="basis-1/3 flex flex-col items-center">
-              <div className="font-medium">325</div>
-              <div className="text-xs text-gray-400">followers</div>
-            </div>
-            <div className="basis-1/3 flex flex-col items-center">
-              <div className="font-medium">335</div>
-              <div className="text-xs text-gray-400">following</div>
-            </div>
-          </div>
-          <div className="py-3 flex flex-row justify-around">
-            <div>
-              <BiGrid className="text-sky-500 w-7 h-7" />
-            </div>
-            <div>
-              <BiRectangle className="text-gray-400 w-6 h-6" />
-            </div>
-            <div>
-              <BiBookmark className="text-gray-400 w-6 h-6" />
-            </div>
-            <div>
-              <BiGroup className="text-gray-400 w-6 h-6" />
-            </div>
-          </div>
-          <div className="grid grid-cols-3 gap-1">
-            {/* kalau ada error coba gunakan overflow-hidden di tag div */}
-            <div>
-              <img
-                src="/assets/p1.jpg"
-                alt=""
-                className="object-cover  aspect-square"
-              />
-            </div>
-            <div>
-              <img
-                src="/assets/p2.jpg"
-                alt=""
-                className="object-cover aspect-square"
-              />
-            </div>
-            <div>
-              <img
-                src="/assets/p3.jpg"
-                alt=""
-                className="object-cover aspect-square"
-              />
-            </div>
-            <div>
-              <img
-                src="/assets/p4.jpg"
-                alt=""
-                className="object-cover aspect-square"
-              />
-            </div>
-            <div>
-              <img
-                src="/assets/p4-1.jpg"
-                alt=""
-                className="object-cover aspect-square"
-              />
-            </div>
-            <div>
-              <img
-                src="/assets/p4-2.jpg"
-                alt=""
-                className="object-cover aspect-square"
-              />
-            </div>
-            <div>
-              <img
-                src="/assets/p5.jpg"
-                alt=""
-                className="object-cover aspect-square"
-              />
-            </div>
-          </div>
-          <BottomBar user={state.user} />
-        </div>
+          )}
+        </>
       )}
     </>
   );

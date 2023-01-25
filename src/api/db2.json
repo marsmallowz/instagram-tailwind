@@ -1,0 +1,23 @@
+{
+  "posts": [
+    {
+      "id_user": 2,
+      "listFoto": [
+        "https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg"
+      ],
+      "keterangan": "pohon dunia",
+      "lokasi": "greenland",
+      "id": 1
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "avatar_url": "/assets/1.jpg",
+      "email": "mazsanzgame@gmail.com",
+      "name": "Alsandy Maulana",
+      "username": "alman",
+      "password": "qweqwe"
+    }
+  ]
+}
