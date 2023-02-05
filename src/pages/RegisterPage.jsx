@@ -12,7 +12,12 @@ export default function RegisterPage() {
   });
 
   async function register() {
-    const res = await axiosInstance.post("/users", user);
+    const res = await axiosInstance.post("/auth/register", user);
+    console.log("res");
+    console.log(res);
+    console.log(res.status);
+    console.log(res.code);
+
     if (res.status === 201) {
       navigate("/login", { replace: true });
     }

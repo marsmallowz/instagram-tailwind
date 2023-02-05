@@ -58,7 +58,7 @@ export default function NavBar(props) {
           </li>
           <li className="" onClick={navigateToProfile}>
             <img
-              className="h-7 w-7 rounded-full"
+              className="h-7 w-7 rounded-full ring-2 ring-gray-400"
               src={props.user.avatarUrl}
               alt="au"
             />

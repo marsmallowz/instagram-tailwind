@@ -8,13 +8,15 @@ export default function Login() {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const [user, setUser] = useState({
-    username: "",
+    username_email_phonenumber: "",
     password: "",
   });
   const [loginStatus, setLoginStatus] = useState(false);
 
   async function Login() {
     const isAuth = await dispatch(userLogin(user));
+
+
     if (isAuth.status) {
       return navigate("/", { state: { user: isAuth.data }, replace: true });
     }
@@ -59,7 +61,7 @@ export default function Login() {
 
         <input
           className="w-[270px] rounded-sm border-2 py-1 px-1 placeholder:text-xs"
-          name="username"
+          name="username_email_phonenumber"
           type="text"
           placeholder="Phone number, username, or email"
           onChange={inputHandler}

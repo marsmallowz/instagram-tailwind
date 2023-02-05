@@ -1,3 +1,4 @@
+import EditProfile from "../pages/EditProfile";
 import Home from "../pages/Home";
 import Login from "../pages/Login";
 import Profile from "../pages/Profile";
@@ -38,6 +39,15 @@ const routes = [
     element: (
       <PageProtected needLogin={true} guestOnly={false}>
         <Profile />
+      </PageProtected>
+    ),
+  },
+
+  {
+    path: "/account/edit",
+    element: (
+      <PageProtected needLogin={true}>
+        <EditProfile />,
       </PageProtected>
     ),
   },

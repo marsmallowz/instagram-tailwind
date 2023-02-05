@@ -2,21 +2,17 @@ import { useState } from "react";
 import { FaPhotoVideo } from "react-icons/fa";
 import { BsChevronDown } from "react-icons/bs";
 import { axiosInstance } from "../config/config";
-import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-
-
-
-
-
-export default function ModalNewPost({ isVisible, closeModalNewPost }) {
-    const [listFoto, setListFoto] = useState([]);
-    const [imageUrl, setImageUrl] = useState("");
+export default function ModalNewPost({ isVisible, closeModalNewPost, setAdditionalPosts, additionalPosts }) {
+    const [listPhoto, setlistPhoto] = useState([]);
     const [crop, setCrop] = useState(false);
     const [edit, setEdit] = useState(false);
     const [inputVideoPhoto, setInputVideoPhoto] = useState(true);
     const [posting, setPosting] = useState(false);
+
+
 
     if (!isVisible) return null;
     function closeModalNewPostOnWrapper(e) {
@@ -30,13 +26,13 @@ export default function ModalNewPost({ isVisible, closeModalNewPost }) {
         >
             {inputVideoPhoto ?
 
-                <InputMedia listFoto={listFoto} setListFoto={setListFoto} imageUrl={imageUrl} setImageUrl={setImageUrl} setCrop={setCrop} setInputVideoPhoto={setInputVideoPhoto} /> :
+                <InputMedia setlistPhoto={setlistPhoto} setCrop={setCrop} setInputVideoPhoto={setInputVideoPhoto} /> :
                 crop ?
-                    <CropMedia listFoto={listFoto} setCrop={setCrop} setEdit={setEdit} /> :
+                    <CropMedia listPhoto={listPhoto} setCrop={setCrop} setEdit={setEdit} /> :
                     edit ?
-                        <EditMedia listFoto={listFoto} setPosting={setPosting} setEdit={setEdit} /> :
+                        <EditMedia listPhoto={listPhoto} setPosting={setPosting} setEdit={setEdit} /> :
                         posting ?
-                            <PostMedia listFoto={listFoto} closeModalNewPost={closeModalNewPost} setPosting={setPosting} /> :
+                            <PostMedia listPhoto={listPhoto} closeModalNewPost={closeModalNewPost} setPosting={setPosting} setAdditionalPosts={setAdditionalPosts} additionalPosts={additionalPosts} /> :
                             <div>loading</div>
             }
         </div>
@@ -55,19 +51,21 @@ function InputMedia(props) {
                         Seret foto dan video di sini
                     </label>
                     <div className="relative">
-                        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"></div>
-                        <input type="text" id="tambahFoto" name="tambahFoto" className="block h-12 w-96 rounded border border-gray-500 py-2 px-3 text-sm focus:border-2 focus:border-blue-600 focus:outline-none" placeholder="Image URL" onChange={e => {
-                            props.setImageUrl(e.target.value);
-                            console.log(props.imageUrl);
-                        }} />
-                        <button onClick={() => {
-                            props.setListFoto([...props.listFoto, props.imageUrl]);
-                            console.log(props.listFoto);
-                            props.setCrop(true);
-                            props.setInputVideoPhoto(false);
-                        }} type="button" className="absolute right-2.5 bottom-1.5 rounded-lg bg-blue-500 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Add
-                        </button>
+                        <input type="file"
+                            multiple
+                            id="tambahFoto"
+                            name="tambahFoto"
+                            onChange={e => {
+                                props.setlistPhoto(e.target.files)
+                                console.log("e.target.files");
+                                console.log(e.target.files);
+                                props.setCrop(true);
+                                props.setInputVideoPhoto(false);
+                            }
+                            }
+                            className="block h-12 w-96 rounded border border-gray-500 py-2 px-3 text-sm focus:border-2 focus:border-blue-600 focus:outline-none" placeholder="Image URL"
+                        />
+
                     </div>
                 </div>
             </div>
@@ -92,13 +90,13 @@ function CropMedia(props) {
             </div>
             <hr />
             <div className="w-full h-full">
-                <img src={props.listFoto[0]} alt="/assets/japan.jpg" className="w-full h-full object-cover rounded-b-2xl" />
+                <img src={props.listPhoto[0] ? URL.createObjectURL(props.listPhoto[0]) : null} alt="" className="w-full h-full object-cover rounded-b-2xl" />
             </div>
         </div>
     );
 }
 
-function EditMedia({ listFoto, setPosting, setEdit }) {
+function EditMedia({ listPhoto, setPosting, setEdit }) {
     return (
         <div className="flex flex-col h-5/6 2xl:w-3/5 w-11/12 bg-white rounded-2xl transition-all">
             <div className="flex justify-between py-2 px-3">
@@ -116,7 +114,7 @@ function EditMedia({ listFoto, setPosting, setEdit }) {
             <hr />
             <div className="flex h-full items-center justify-center rounded-2xl">
                 <div className="basis-2/3  w-full h-full">
-                    <img src={listFoto[0]} alt="/assets/japan.jpg" className="w-full h-full object-cover rounded-bl-2xl" />
+                    <img src={listPhoto[0] ? URL.createObjectURL(listPhoto[0]) : null} alt="" className="w-full h-full object-cover rounded-bl-2xl" />
                 </div>
                 <div className="flex h-full basis-1/3 flex-col">
                     <div className="flex justify-around py-2">
@@ -125,51 +123,51 @@ function EditMedia({ listFoto, setPosting, setEdit }) {
                     </div>
                     <div className="grid grid-cols-3 grid-rows-4 gap-4 p-2">
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover border-2 border-blue-400" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover border-2 border-blue-400" />
                             <div className="text-sm text-blue-400 font-medium">Asli</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover contrast-[1.2] brightness-100 saturate-[1.25]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover contrast-[1.2] brightness-100 saturate-[1.25]" />
                             <div className="text-sm text-gray-400">Claredon</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover hue-rotate-[360deg]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover hue-rotate-[360deg]" />
                             <div className="text-sm text-gray-400">Gingham</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover brightness-[1.4] contrast-[.95] saturate-0 sepia-[.35]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover brightness-[1.4] contrast-[.95] saturate-0 sepia-[.35]" />
                             <div className="text-sm text-gray-400">Moon</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover brightness-[1.3] contrast-[1.2] saturate-[1.25] sepia-[.325]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover brightness-[1.3] contrast-[1.2] saturate-[1.25] sepia-[.325]" />
                             <div className="text-sm text-gray-400">Lark</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover brightness-125 contrast-75 saturate-[1.4] sepia-[.75]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover brightness-125 contrast-75 saturate-[1.4] sepia-[.75]" />
                             <div className="text-sm text-gray-400">Reyes</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover brightness-[1.15] contrast-[1.15] saturate-[1.8] sepia-[.35]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover brightness-[1.15] contrast-[1.15] saturate-[1.8] sepia-[.35]" />
                             <div className="text-sm text-gray-400">Juno</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover  contrast-125 saturate-[1.25] sepia-[.35]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover  contrast-125 saturate-[1.25] sepia-[.35]" />
                             <div className="text-sm text-gray-400">Slumber</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover brightness-[1.15] contrast-125 hue-rotate-[-2deg] saturate-[.9] sepia-[.5]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover brightness-[1.15] contrast-125 hue-rotate-[-2deg] saturate-[.9] sepia-[.5]" />
                             <div className="text-sm text-gray-400">Crema</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover brightness-105 contrast-[1.05] saturate-[2] sepia-[.25]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover brightness-105 contrast-[1.05] saturate-[2] sepia-[.25]" />
                             <div className="text-sm text-gray-400">Ludwig</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover brightness-[1.15]  saturate-[1.4] sepia-[.2]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover brightness-[1.15]  saturate-[1.4] sepia-[.2]" />
                             <div className="text-sm text-gray-400">Aden</div>
                         </div>
                         <div className="flex flex-col items-center">
-                            <img src="/assets/air_ballon2.webp" alt="/assets/japan.jpg" className="aspect-square object-cover brightness-125 contrast-[1.1] saturate-[1.1]" />
+                            <img src="/assets/air_ballon2.webp" alt="" className="aspect-square object-cover brightness-125 contrast-[1.1] saturate-[1.1]" />
                             <div className="text-sm text-gray-400">Perptua</div>
                         </div>
                     </div>
@@ -181,13 +179,70 @@ function EditMedia({ listFoto, setPosting, setEdit }) {
 
 function PostMedia(props) {
     const userSelector = useSelector((state) => state.auth);
+    const navigate = useNavigate();
+
     const [keterangan, setKeterangan] = useState("")
+    let formData = new FormData();
     const [lokasi, setLokasi] = useState("false")
 
     async function postNewPost() {
-        const res = await axiosInstance.post("/posts", { id: 0, imageList: props.listFoto, caption: keterangan, userId: userSelector.id, });
-        if (res.status === 201) {
-            Navigate("/", { replace: true });
+        Array.from(props.listPhoto).forEach(selectedFile => {
+            console.log("selectedFile");
+            console.log(selectedFile);
+
+            formData.append(
+                "image",
+                selectedFile,
+            );
+        })
+        formData.append(
+            "id",
+            0,
+        );
+        formData.append(
+            "caption",
+            keterangan,
+        );
+        formData.append(
+            "userId",
+            userSelector.id,
+        );
+        console.log("formData");
+        console.log(formData);
+        console.log(props.listPhoto);
+
+        // props.listPhoto.foreach((selectedFile) => {
+        //     formData.append(
+        //         "image",
+        //         selectedFile,
+        //         selectedFile.name
+        //     );
+        // })
+        // const res = await axiosInstance.post("/posts", { id: 0, caption: keterangan, userId: userSelector.id, ...formData });
+        const res = await axiosInstance.post("/posts", formData);
+        console.log("mystatus");
+        console.log(res.status);
+        if (res.status === 200) {
+            props.setAdditionalPosts([...props.additionalPosts, {
+                "id": 90,
+                "caption": "Ini diatas woy",
+                "createdAt": "2023-02-31T07:32:19.000Z",
+                "updatedAt": "2023-02-31T07:32:19.000Z",
+                "userId": 1,
+                "User": {
+                    "username": "massandz",
+                    "avatarUrl": "https://icon-library.com/images/default-profile-icon/default-profile-icon-24.jpg"
+                },
+                "photos": [
+                    {
+                        "id": 100,
+                        "url": "http://localhost:2600/post-image/POST_SuPJ7kap3VZQRcas94Gv1.jpeg"
+                    }
+                ],
+                "likes": [],
+                "comments": []
+            },])
+            navigate("/", { replace: true });
         }
     }
 
@@ -210,7 +265,7 @@ function PostMedia(props) {
         <hr />
         <div className="flex h-full items-center justify-center rounded-2xl">
             <div className="basis-2/3  w-full h-full">
-                <img src={props.listFoto[0]} alt="" className="w-full h-full object-cover rounded-bl-2xl" />
+                <img src={props.listPhoto[0] ? URL.createObjectURL(props.listPhoto[0]) : null} alt="" className="w-full h-full object-cover rounded-bl-2xl" />
             </div>
             <div className="flex flex-col h-full basis-1/3 divide-y">
                 <div className="flex flex-col gap-3 p-3">

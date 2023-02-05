@@ -167,11 +167,11 @@ export default function Profile() {
                   <div className="text-xs text-gray-400">posts</div>
                 </div>
                 <div className="flex basis-1/3 flex-col items-center">
-                  <div className="font-medium">325</div>
+                  <div className="font-medium">0</div>
                   <div className="text-xs text-gray-400">followers</div>
                 </div>
                 <div className="flex basis-1/3 flex-col items-center">
-                  <div className="font-medium">335</div>
+                  <div className="font-medium">0</div>
                   <div className="text-xs text-gray-400">following</div>
                 </div>
               </div>
@@ -189,8 +189,8 @@ export default function Profile() {
                   <BiGroup className="h-6 w-6 text-gray-400" />
                 </div>
               </div>
-              <div className="grid grid-cols-3 gap-1">
-                {/* kalau ada error coba gunakan overflow-hidden di tag div */}
+              {/* <div className="grid grid-cols-3 gap-1">
+                //kalau ada error coba gunakan overflow-hidden di tag div
                 <div>
                   <img
                     src="/assets/p1.jpg"
@@ -240,7 +240,7 @@ export default function Profile() {
                     className="aspect-square object-cover"
                   />
                 </div>
-              </div>
+              </div> */}
               <BottomBar user={user} />
             </div>
           )}

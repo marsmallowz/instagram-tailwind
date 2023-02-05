@@ -1,32 +1,68 @@
-import { useState } from "react";
-import { useEffect } from "react";
+import { useCallback, useState, useRef, useEffect } from "react";
 import { useSelector } from "react-redux";
 import BottomBar from "../components/BottomBar";
 import ModalNewPost from "../components/modalNewPost";
 import NavBar from "../components/NavBar";
 import Post from "../components/Post";
+
 import Stories from "../components/Stories";
-import { axiosInstance } from "../config/config";
+import usePosts from '../hooks/usePosts'
 
 export default function Home() {
   const userSelector = useSelector((state) => state.auth);
   const [showModalNewPost, setShowModalNewPost] = useState(false);
+  const [additionalPosts, setAdditionalPosts] = useState([]);
 
-  // console.log("userSelector");
+  const [pageNum, setPageNum] = useState(0)
+  const {
+    isLoading,
+    isError,
+    error,
+    results,
+    hasNextPage
+  } = usePosts(pageNum)
 
-  // console.log(userSelector);
-  const [posts, setPosts] = useState([]);
+  const intObserver = useRef()
 
-  const fetchPosts = async () => {
-    await axiosInstance.get("posts").then((res) => {
-      setPosts(res.data);
-      setTimeout(() => { }, 500);
+
+
+
+  const lastPostRef = useCallback(post => {
+    if (isLoading) return
+
+    if (intObserver.current) intObserver.current.disconnect()
+
+    intObserver.current = new IntersectionObserver(posts => {
+      if (posts[0].isIntersecting && hasNextPage) {
+        console.log('We are near the last post!')
+        setPageNum(prev => prev + 4)
+      }
+    })
+
+    if (post) intObserver.current.observe(post)
+  }, [isLoading, hasNextPage])
+
+  const content = results.map((post, i) => {
+    console.log("key contentpost");
+    console.log(post.id);
+    const checked = post.likes?.find((val) => {
+      return val.id === userSelector.id;
     });
-  };
+    post.liked = checked ? true : false;
+    if (results.length === i + 1) {
+      return <Post ref={lastPostRef} key={post.id} post={post} user={userSelector} />
+    }
+    return <Post key={post.id} post={post} user={userSelector} />
+  })
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  const newPosts = additionalPosts.map((post) => {
+    console.log("key newPosts");
+    console.log(post.id);
+    return <Post key={post.id} post={post} user={userSelector} />
+  })
+
+
+
 
   return (
     <div className="flex flex-col bg-slate-50 sm:flex-row">
@@ -36,17 +72,16 @@ export default function Home() {
         {/* lg:mx-0 container */}
         <div className="flex flex-col gap-3 md:mx-auto md:w-4/5 lg:mx-0 lg:w-4/12 ">
           <Stories />
-          {console.log(posts)}
-          {posts?.map((post, key) => {
-            return <Post post={post} key={key} userId={userSelector.id} username={userSelector.username} />;
-          })}
+          {/* {console.log(additionalPosts)} */}
+          {newPosts}
+          {content}
         </div>
         <div className="my-5 hidden w-2/12 flex-col gap-4 lg:flex ">
           <div className="flex items-center gap-3 ">
             <img
               src={userSelector.avatarUrl}
               alt=""
-              className="h-16 w-16 rounded-full object-cover"
+              className="h-16 w-16 rounded-full object-contain"
             />
             <div className="flex flex-col">
               <div className="font-medium">{userSelector.username}</div>
@@ -141,6 +176,8 @@ export default function Home() {
       <ModalNewPost
         isVisible={showModalNewPost}
         closeModalNewPost={() => setShowModalNewPost(false)}
+        setAdditionalPosts={setAdditionalPosts}
+        additionalPosts={additionalPosts}
       />
     </div>
   );

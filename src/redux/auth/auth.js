@@ -2,10 +2,11 @@ import user_types from "./types";
 
 const init_state = {
   id: 0,
+  email: "",
   username: "",
-  password: "",
-  avatarUrl: "",
+  phonenumber: "",
   fullname: "",
+  avatarUrl: "",
 };
 
 // state itu statenya action itu setStatenya
@@ -15,10 +16,11 @@ function userReducer(state = init_state, action) {
     return {
       ...state,
       id: action.payload.id,
+      email: action.payload.email,
       username: action.payload.username,
-      password: action.payload.password,
-      avatarUrl: action.payload.avatarUrl,
+      phoneNumber: action.payload.phoneNumber,
       fullname: action.payload.fullname,
+      avatarUrl: action.payload.avatarUrl,
     };
   } else if (action.type === user_types.USER_LOGOUT) {
     return init_state;
