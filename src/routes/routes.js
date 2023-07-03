@@ -34,7 +34,6 @@ const routes = [
   },
 
   {
-    // hanya untuk semantik id khusus id, slug bisa untuk apapun
     path: "/:slug",
     element: (
       <PageProtected needLogin={true} guestOnly={false}>
@@ -51,11 +50,6 @@ const routes = [
       </PageProtected>
     ),
   },
-
-  // {
-  //   path: "/*",
-  //   element: <Home />,
-  // },
 ];
 
 export default routes;

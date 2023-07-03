@@ -3,9 +3,6 @@ import { FiSearch } from "react-icons/fi";
 import { BiMoviePlay } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 
-// FiSearch
-// BiMoviePlay
-// AiOutlineMessage
 export default function BottomBar(props) {
   let navigate = useNavigate();
   function navigateToProfile() {
@@ -43,11 +40,9 @@ export default function BottomBar(props) {
         </li>
         <li onClick={navigateToProfile}>
           <button>
-            {/* <Link to={"/".concat(props.user.username)}></Link> */}
             <img
               className="h-7 w-7 rounded-full object-cover"
-              // src={props.user.avatar_url}
-              src={props.user?.avatar_url}
+              src={props.user?.avatarUrl}
               alt="au"
             />
           </button>

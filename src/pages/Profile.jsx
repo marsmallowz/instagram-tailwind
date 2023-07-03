@@ -96,7 +96,7 @@ export default function Profile() {
           {openSettings ? (
             <div>
               <ul className=" flex flex-col justify-center gap-1 divide-y">
-                <li className="cursor-pointer py-1" onClick={() => { }}>
+                <li className="cursor-pointer py-1" onClick={() => {}}>
                   <div className="px-4">Help</div>
                 </li>
                 <li className="cursor-pointer py-1" onClick={logOut}>
@@ -189,8 +189,8 @@ export default function Profile() {
                   <BiGroup className="h-6 w-6 text-gray-400" />
                 </div>
               </div>
-              {/* <div className="grid grid-cols-3 gap-1">
-                //kalau ada error coba gunakan overflow-hidden di tag div
+              <div className="grid grid-cols-3 gap-1">
+                {/* //kalau ada error coba gunakan overflow-hidden di tag div */}
                 <div>
                   <img
                     src="/assets/p1.jpg"
@@ -240,7 +240,7 @@ export default function Profile() {
                     className="aspect-square object-cover"
                   />
                 </div>
-              </div> */}
+              </div>
               <BottomBar user={user} />
             </div>
           )}
